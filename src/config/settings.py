@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    "django_extensions",
+    "rest_framework",
+    "url_checks.apps.UrlChecksConfig",
+    # first party
+    "main.apps.MainConfig"
 ]
 
 MIDDLEWARE = [

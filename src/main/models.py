@@ -4,6 +4,8 @@ from django.db.models import (
     BooleanField,
     DateTimeField,
     Model,
+    ForeignKey,
+    CASCADE,
 )
 
 
@@ -26,3 +28,20 @@ class Wallet(Model):
 
     def __str__(self):
         return self.name + self.wallet_type + self.balance
+
+
+class Category(Model):
+    name = CharField(max_length=63, primary_key=True)
+    parent = ForeignKey(
+        'self',
+        blank=True,
+        null=True,
+        related_name='children',
+        on_delete=CASCADE,
+    )
+    isActive = BooleanField(default=True)
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'spending category'
