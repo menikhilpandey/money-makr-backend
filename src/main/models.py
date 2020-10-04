@@ -34,7 +34,7 @@ class Wallet(Model):
         unique_together = ["name", "wallet_type"]
 
     def __str__(self):
-        return self.name + self.wallet_type + str(self.balance)
+        return str(self.slug)
 
     def delete(self, *args, **kwargs):
         return
@@ -44,7 +44,6 @@ class Category(Model):
     """ Category Model """
     name = CharField(
         max_length=63,
-        primary_key=True,
         default='Others',
         unique=True,
     )
@@ -61,7 +60,7 @@ class Category(Model):
     )
 
     class Meta:
-        verbose_name = 'spending category'
+        verbose_name_plural = 'categories'
 
     def __str__(self):
         return self.name
