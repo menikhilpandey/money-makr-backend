@@ -11,17 +11,27 @@ from django.db.models import (
     CASCADE
 )
 
+from django_extensions.db.fields import AutoSlugField
+
 
 class Wallet(Model):
     """ Wallet Model """
-    name = CharField(max_length=63, primary_key=True)
+    name = CharField(max_length=63)
     wallet_type = CharField(
         max_length=63,
         default='liquid_assets'
     )
+    slug = AutoSlugField(
+        max_length=127,
+        populate_from=["name", "wallet_type"],
+        db_index=True
+    )
     currency = CharField(max_length=7)
     balance = FloatField(default=0)
     exclude_from_total = BooleanField(default=False)
+
+    class Meta:
+        unique_together = ["name", "wallet_type"]
 
     def __str__(self):
         return self.name + self.wallet_type + str(self.balance)
@@ -43,6 +53,11 @@ class Category(Model):
         related_name='sub_category',
         on_delete=SET_NULL,
     )
+    slug = AutoSlugField(
+        max_length=127,
+        populate_from=["name"],
+        db_index=True
+    )
 
     class Meta:
         verbose_name = 'spending category'
@@ -58,6 +73,11 @@ class Event(Model):
     """ Event Model """
     name = CharField(max_length=63)
     budget_goal = FloatField(default=0)
+    slug = AutoSlugField(
+        max_length=127,
+        populate_from=["name"],
+        db_index=True
+    )
 
     def __str__(self):
         return str(self.name)

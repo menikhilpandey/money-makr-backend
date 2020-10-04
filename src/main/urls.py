@@ -10,7 +10,7 @@ urlpatterns = [
         name="wallet_lc"
     ),
     path(
-        "wallet/<str:name>/",
+        "wallet/<str:slug>/",
         WalletRetrieveUpdateAPIView.as_view(),
         name="wallet_rud"
     )

@@ -20,4 +20,4 @@ class WalletRetrieveUpdateAPIView(RetrieveUpdateDestroyAPIView):
     """ Wallet RetrieveUpdateDestroyAPIView """
     queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
-    lookup_field = "name"
+    lookup_field = "slug"
