@@ -13,7 +13,7 @@ from django.db.models import (
 
 
 class Wallet(Model):
-    """ Wallet Model: CRU """
+    """ Wallet Model """
     name = CharField(max_length=63, primary_key=True)
     wallet_type = CharField(
         max_length=63,
@@ -31,7 +31,7 @@ class Wallet(Model):
 
 
 class Category(Model):
-    """ Category Model: CRU """
+    """ Category Model """
     name = CharField(
         max_length=63,
         primary_key=True,
@@ -55,7 +55,7 @@ class Category(Model):
 
 
 class Event(Model):
-    """ Event Model: CRUD"""
+    """ Event Model """
     name = CharField(max_length=63)
     budget_goal = FloatField(default=0)
 
@@ -64,11 +64,11 @@ class Event(Model):
 
 
 class Budget(Model):
-    """ Event Model: CRUD"""
+    """ Event Model """
     category = ForeignKey(
         Category,
-        default='All',
-        on_delete=CASCADE
+        default='Others',
+        on_delete=SET_DEFAULT
     )
     budget_goal = FloatField(default=0)
     start_date = DateField(null=True)
@@ -79,7 +79,7 @@ class Budget(Model):
 
 
 class Transaction(Model):
-    """ Event Model: CRUD"""
+    """ Event Model"""
     amount = FloatField(default=0)
     category = ForeignKey(
         Category,
