@@ -19,12 +19,12 @@ class Wallet(Model):
     name = CharField(max_length=63)
     wallet_type = CharField(
         max_length=63,
-        default='liquid_assets'
+        default='liquid_assets',
     )
     slug = AutoSlugField(
         max_length=127,
         populate_from=["name", "wallet_type"],
-        db_index=True
+        db_index=True,
     )
     currency = CharField(max_length=7)
     balance = FloatField(default=0)
@@ -45,7 +45,8 @@ class Category(Model):
     name = CharField(
         max_length=63,
         primary_key=True,
-        default='Others'
+        default='Others',
+        unique=True,
     )
     parent = ForeignKey(
         'self',
@@ -56,14 +57,14 @@ class Category(Model):
     slug = AutoSlugField(
         max_length=127,
         populate_from=["name"],
-        db_index=True
+        db_index=True,
     )
 
     class Meta:
         verbose_name = 'spending category'
 
     def __str__(self):
-        return self.parent.name + self.name
+        return self.name
 
     def delete(self, *args, **kwargs):
         return
@@ -71,12 +72,12 @@ class Category(Model):
 
 class Event(Model):
     """ Event Model """
-    name = CharField(max_length=63)
+    name = CharField(max_length=63, unique=True)
     budget_goal = FloatField(default=0)
     slug = AutoSlugField(
         max_length=127,
         populate_from=["name"],
-        db_index=True
+        db_index=True,
     )
 
     def __str__(self):
@@ -88,7 +89,7 @@ class Budget(Model):
     category = ForeignKey(
         Category,
         default='Others',
-        on_delete=SET_DEFAULT
+        on_delete=SET_DEFAULT,
     )
     budget_goal = FloatField(default=0)
     start_date = DateField(null=True)
@@ -104,7 +105,7 @@ class Transaction(Model):
     category = ForeignKey(
         Category,
         default='Others',
-        on_delete=SET_DEFAULT
+        on_delete=SET_DEFAULT,
     )
     description = TextField(null=True, blank=True)
     date = DateField()
