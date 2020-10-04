@@ -19,6 +19,8 @@ pycodestyle==2.4.0
 pydocstyle==5.1.1
 pyflakes==1.6.0
 pylint==2.6.0
+pylint-django==2.3.0
+pylint-plugin-utils==0.6
 pytz==2020.1
 six==1.15.0
 snowballstemmer==2.0.0
