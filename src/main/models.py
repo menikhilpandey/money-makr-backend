@@ -6,6 +6,7 @@ from django.db.models import (
     TextField,
     Model,
     ForeignKey,
+    IntegerField,
     SET_DEFAULT,
     SET_NULL,
     CASCADE
@@ -37,6 +38,7 @@ class Wallet(Model):
         return str(self.slug)
 
     def delete(self, *args, **kwargs):
+        """ Prevent Delete """
         return
 
 
@@ -66,6 +68,7 @@ class Category(Model):
         return self.name
 
     def delete(self, *args, **kwargs):
+        """ Prevent Delete """
         return
 
 
@@ -100,6 +103,13 @@ class Budget(Model):
 
 class Transaction(Model):
     """ Event Model"""
+    INCOME = 1
+    EXPENSE = -1
+    TRANSACTION_TYPE_CHOICES = [
+        (INCOME, 'Income'),
+        (EXPENSE, 'Expense'),
+    ]
+
     amount = FloatField(default=0)
     category = ForeignKey(
         Category,
@@ -107,6 +117,9 @@ class Transaction(Model):
         on_delete=SET_DEFAULT,
     )
     description = TextField(null=True, blank=True)
+    transaction_type = IntegerField(
+        choices=TRANSACTION_TYPE_CHOICES
+    )
     date = DateField()
     wallet = ForeignKey(Wallet, on_delete=CASCADE)
     event = ForeignKey(Event, null=True, on_delete=SET_NULL)
@@ -116,4 +129,16 @@ class Transaction(Model):
         ordering = ["-date"]
 
     def __str__(self):
-        return str(self.category) + str(self.wallet) + str(self.amount)
+        return ("%s %s %s") % (str(self.category), str(self.wallet), str(self.amount))
+
+    def save(self, *args, **kwargs):
+        """ Saving Object """
+        try:
+            wallet = Wallet.objects.get(
+                slug=self.wallet.slug,
+            )
+            wallet.balance += self.amount * self.transaction_type
+            wallet.save()
+        except Exception as error:
+            print(error)
+        super().save(*args, **kwargs)
