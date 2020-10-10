@@ -8,7 +8,7 @@ from .models import Category
 
 class RestApiTests(APITestCase):
 
-    def test_walletCreate(self):
+    def test_wallet_create(self):
         wallet = {
             'name': 'test_wallet_1',
             'wallet_type': 'bank',
@@ -19,7 +19,7 @@ class RestApiTests(APITestCase):
         self.assertEqual(Wallet.objects.count(), 1)
         self.assertEqual(Wallet.objects.get().name, 'test_wallet_1')
 
-    def test_walletUpdate(self):
+    def test_wallet_update(self):
         wallet_init = {
             'name': 'test_wallet_1',
             'wallet_type': 'digital_wallet',
@@ -47,7 +47,7 @@ class RestApiTests(APITestCase):
         self.assertEqual(Wallet.objects.get().balance, 20000)
         self.assertEqual(Wallet.objects.get().wallet_type, 'bank')
 
-    def test_categoryCreate(self):
+    def test_category_create(self):
         category_parent = {
             'name': 'shopping'
         }
@@ -67,7 +67,7 @@ class RestApiTests(APITestCase):
         self.assertEqual(Category.objects.count(), 2)
         self.assertEqual(Category.objects.get(name = "electronics").parent, Category.objects.get(name = "shopping"))
 
-    def test_categoryUpdate(self):
+    def test_category_update(self):
         category = {
             'name': 'groceries'
         }
